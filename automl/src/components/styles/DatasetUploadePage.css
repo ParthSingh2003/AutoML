@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+  --bg-color: #121212;       /* Dark background */
+  --box-bg: #1e1e1e;         /* Slightly lighter dark */
+  --neon-purple: #a854f5;    /* Neon purple accent */
+  --text-color: #e0e0e0;     /* Light text */
+  --hover-purple: #c28bff;   /* Brighter hover effect */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Upload File Box */
+.file-upload-box {
+  width: 1400px;
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 1rem 0rem;
+  border: 2px solid var(--neon-purple);
+  border-radius: 8px;
+  background: var(--box-bg);
+  box-shadow: 0 0 10px var(--neon-purple);
+  transition: 0.3s ease-in-out;
+}
+
+.file-upload-box:hover {
+  box-shadow: 0 0 20px var(--hover-purple);
+}
+
+/* Styled Upload Button */
+.file-upload-box input[type="file"] {
+  display: none;
+}
+
+.upload-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+  background: var(--neon-purple);
+  border: 2px solid var(--hover-purple);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 0 10px var(--neon-purple);
+}
+
+.upload-btn:hover {
+  background: var(--hover-purple);
+  box-shadow: 0 0 20px var(--hover-purple);
+  transform: scale(1.05);
+}
+
+.parallel-boxes {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.column-list,
+.drop-box {
+  width: 300px;
+  padding: 1rem;
+  border: 2px solid var(--neon-purple);
+  border-radius: 8px;
+  background: var(--box-bg);
+  box-shadow: 0 0 10px var(--neon-purple);
+  text-align: center;
+  min-height: 600px;
+  max-height: 600px;
+  overflow-y: auto;
+  position: relative;
+  transition: 0.3s ease-in-out;
+}
+
+.column-list:hover,
+.drop-box:hover {
+  box-shadow: 0 0 20px var(--hover-purple);
+}
+
+/* Hide scrollbar but allow scrolling */
+.column-list::-webkit-scrollbar,
+.drop-box::-webkit-scrollbar {
+  display: none;
+}
+
+.column-list,
+.drop-box {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.drop-boxes {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Column name list inside the left box */
+.column-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 10px 0 0;
+  max-height: 550px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+/* Drop box content (hidden when empty) */
+.drop-box ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 550px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border-radius: 6px;
+  visibility: hidden;
+}
+
+.drop-box ul:has(li) {
+  visibility: visible;
+}
+
+/* Column name boxes */
+li {
+  background-color: var(--neon-purple);
+  color: black;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: grab;
+  border: 1px solid var(--hover-purple);
+  box-shadow: 0 0 5px var(--hover-purple);
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+li:hover {
+  background-color: var(--hover-purple);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--hover-purple);
+}
+
+/* Buttons */
+.button-container {
+  margin-top: 1rem;
+  display: flex;
+  gap: 20px;
+}
+
+.reset-button, .submit-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 2px solid var(--neon-purple);
+  border-radius: 5px;
+  cursor: pointer;
+  background: var(--box-bg);
+  color: var(--text-color);
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 0 10px var(--neon-purple);
+}
+
+.reset-button:hover {
+  background-color: #ff4d4d;
+  box-shadow: 0 0 15px #ff4d4d;
+}
+
+.submit-button {
+  background-color: var(--neon-purple);
+  color: black;
+}
+
+.submit-button:hover {
+  background-color: var(--hover-purple);
+  box-shadow: 0 0 15px var(--hover-purple);
+}
+
+.submit-button:disabled {
+  background-color: #444;
+  border: 2px solid #666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

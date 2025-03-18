@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.column-list {
+  width: 22%;
+  border: 2px solid #333;
+  padding: 1rem;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.column-list input {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.column-list ul {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 2px solid #333;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.column-list li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  cursor: grab;
+}
+
+.drop-boxes {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  gap: 1rem;
+}
+
+.drop-box {
+  width: 33%;
+  border: 2px solid #333;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f9f9f9;
+  min-height: 200px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.drop-box h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.drop-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.drop-box li {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
