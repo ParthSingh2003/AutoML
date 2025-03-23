@@ -99,4 +99,14 @@ body {
       width: 90%;
     }
   }
+
+  /* Error Message */
+.error-message {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+
+
   

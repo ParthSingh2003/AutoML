@@ -1,14 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/SignUpPage.css";
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    mobile: "",
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState(""); // Error state
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,7 +20,15 @@ const SignUpPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("User Data:", formData);
+
+    // Basic validation to check if all fields are filled
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
+      setError("❌ Please fill in all fields!");
+      return;
+    }
+
+    // Navigate to OTP Page with email
+    navigate("/otp", { state: { email: formData.email } });
   };
 
   return (
@@ -40,17 +52,9 @@ const SignUpPage = () => {
           required
         />
         <input
-          type="tel"
-          name="mobile"
-          placeholder="Mobile Number"
-          value={formData.mobile}
-          onChange={handleChange}
-          required
-        />
-        <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={formData.email}
           onChange={handleChange}
           required
@@ -63,6 +67,7 @@ const SignUpPage = () => {
           onChange={handleChange}
           required
         />
+        {error && <p className="error-message">{error}</p>} {/* Show error message */}
         <button type="submit">Sign Up</button>
       </form>
     </div>

@@ -1,11 +1,22 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+  // Default credentials
+  const defaultCredentials = {
+    email: "test@example.com",
+    password: "password123",
+  };
+
   const [formData, setFormData] = useState({
-    emailOrMobile: "",
+    email: "",
     password: "",
   });
+
+  const [error, setError] = useState(""); // Error message state
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,7 +24,17 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login Data:", formData);
+
+    // Check if credentials match
+    if (
+      formData.email === defaultCredentials.email &&
+      formData.password === defaultCredentials.password
+    ) {
+      // Navigate to OTP Page with email as state
+      navigate("/otp", { state: { email: formData.email } });
+    } else {
+      setError("❌ Incorrect login credentials!"); // Show error message
+    }
   };
 
   return (
@@ -21,10 +42,10 @@ const LoginPage = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit} className="login-form">
         <input
-          type="text"
-          name="emailOrMobile"
-          placeholder="Email or Mobile Number"
-          value={formData.emailOrMobile}
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={formData.email}
           onChange={handleChange}
           required
         />
@@ -36,6 +57,7 @@ const LoginPage = () => {
           onChange={handleChange}
           required
         />
+        {error && <p className="error-message">{error}</p>} {/* Show error message */}
         <button type="submit">Login</button>
       </form>
     </div>
