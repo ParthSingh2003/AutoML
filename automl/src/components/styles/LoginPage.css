@@ -1,0 +1,102 @@
+/* Dark Background */
+body {
+    background-color: #121212;
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* Centered Container */
+  .login-container {
+    width: 350px;
+    padding: 25px;
+    background: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+    text-align: center;
+  }
+  
+  /* Heading */
+  h2 {
+    font-size: 24px;
+    color: #b366ff;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  
+  /* Form Styling */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-form input {
+    background: #262626;
+    border: 2px solid transparent;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #fff;
+    transition: 0.3s;
+    outline: none;
+  }
+  
+  /* Placeholder Styling - Same Font, Size, and Color */
+  .login-form input::placeholder {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    color: rgba(179, 102, 255, 0.7); /* Neon purple with opacity */
+  }
+  
+  /* Input Focus Effect */
+  .login-form input:focus {
+    border-color: #b366ff;
+    box-shadow: 0 0 10px rgba(179, 102, 255, 0.7);
+  }
+  
+  /* Autofill Prevention */
+  .login-form input:-webkit-autofill,
+  .login-form input:-webkit-autofill:hover,
+  .login-form input:-webkit-autofill:focus,
+  .login-form input:-webkit-autofill:active {
+    background-color: #262626 !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #262626 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  
+  /* Button */
+  .login-form button {
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #7b2ff7, #a64bf4);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(179, 102, 255, 0.7);
+  }
+  
+  .login-form button:hover {
+    background: linear-gradient(90deg, #a64bf4, #7b2ff7);
+    box-shadow: 0 0 15px rgba(179, 102, 255, 1);
+    transform: scale(1.05);
+  }
+  
+  /* Responsive */
+  @media (max-width: 400px) {
+    .login-container {
+      width: 90%;
+    }
+  }
+  

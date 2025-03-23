@@ -1,0 +1,72 @@
+.startup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #121212;
+    text-align: center;
+    color: #fff;
+  }
+  
+  .startup-title {
+    font-size: 3rem;
+    color: #bb86fc; /* Neon Purple */
+    text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc;
+  }
+  
+  .startup-description {
+    font-size: 1.2rem;
+    color: #b0b0b0;
+    max-width: 600px;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+  
+  .video-section {
+    margin-top: 20px;
+  }
+  
+  .video-label {
+    font-size: 1rem;
+    color: #bb86fc;
+    margin-bottom: 5px;
+  }
+  
+  .tutorial-video {
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #bb86fc;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .startup-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .login-button {
+    background-color: #bb86fc;
+    color: #121212;
+  }
+  
+  .signup-button {
+    background-color: #9b59b6;
+    color: #fff;
+  }
+  
+  .startup-button:hover {
+    box-shadow: 0 0 15px #bb86fc, 0 0 30px #bb86fc;
+  }
+  
