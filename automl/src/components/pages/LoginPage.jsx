@@ -1,39 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/LoginPage.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
-  // Default credentials
-  const defaultCredentials = {
-    email: "test@example.com",
-    password: "password123",
-  };
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const [error, setError] = useState(""); // Error message state
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Check if credentials match
-    if (
-      formData.email === defaultCredentials.email &&
-      formData.password === defaultCredentials.password
-    ) {
-      // Navigate to OTP Page with email as state
-      navigate("/otp", { state: { email: formData.email } });
-    } else {
-      setError("❌ Incorrect login credentials!"); // Show error message
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
+      if (res.data.msg === "OTP sent to your email") {
+        navigate("/otp", { state: { email: formData.email, mode: "login" } });
+      } else {
+        setError("Unexpected response from server.");
+      }
+    } catch (err) {
+      console.error(err);
+      const msg = err.response?.data?.msg || "❌ Something went wrong. Try again.";
+      setError(msg);
     }
   };
 
@@ -57,7 +53,7 @@ const LoginPage = () => {
           onChange={handleChange}
           required
         />
-        {error && <p className="error-message">{error}</p>} {/* Show error message */}
+        {error && <p className="error-message">{error}</p>}
         <button type="submit">Login</button>
       </form>
     </div>

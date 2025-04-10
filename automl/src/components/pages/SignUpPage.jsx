@@ -12,23 +12,52 @@ const SignUpPage = () => {
     password: "",
   });
 
-  const [error, setError] = useState(""); // Error state
+  const [error, setError] = useState(""); // Error message
+  const [loading, setLoading] = useState(false); // Optional: show spinner
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(""); // Clear error on change
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation to check if all fields are filled
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
+    const { firstName, lastName, email, password } = formData;
+
+    // Basic validation
+    if (!firstName || !lastName || !email || !password) {
       setError("❌ Please fill in all fields!");
       return;
     }
 
-    // Navigate to OTP Page with email
-    navigate("/otp", { state: { email: formData.email } });
+    try {
+      setLoading(true);
+
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(`❌ ${data.msg || "Signup failed"}`);
+        setLoading(false);
+        return;
+      }
+
+      // Navigate to OTP page with email and "signup" flag
+      navigate("/otp", {
+        state: { email: formData.email, from: "signup" },
+      });
+    } catch (err) {
+      console.error(err);
+      setError("❌ Server error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,8 +96,11 @@ const SignUpPage = () => {
           onChange={handleChange}
           required
         />
-        {error && <p className="error-message">{error}</p>} {/* Show error message */}
-        <button type="submit">Sign Up</button>
+
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit" disabled={loading}>
+          {loading ? "Sending OTP..." : "Sign Up"}
+        </button>
       </form>
     </div>
   );
