@@ -19,6 +19,7 @@ import StartUpPage from "./components/pages/StartUpPage";
 import LoginPage from "./components/pages/LoginPage";
 import SignUpPage from "./components/pages/SignUpPage";
 import OtpPage from "./components/pages/OtpPage";
+import UserHomePage from "./components/pages/UserHomePage";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/otp" element={<OtpPage />} />
         <Route path="/otp" element={<OtpPage />} />
+        <Route path="/home" element={<UserHomePage />} />
       </Routes>
     </Router>
   );

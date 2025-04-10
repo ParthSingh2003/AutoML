@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/OtpPage.css";
 
 const OtpPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const email = location.state?.email || "your registered email";
 
   const [otp, setOtp] = useState("");
+  const [error, setError] = useState("");
+
+  const defaultOtp = "123456";
 
   const handleChange = (e) => {
     setOtp(e.target.value);
@@ -14,8 +18,11 @@ const OtpPage = () => {
 
   const handleVerify = (e) => {
     e.preventDefault();
-    console.log("Entered OTP:", otp);
-    alert("OTP Verified Successfully!");
+    if (otp === defaultOtp) {
+      navigate("/home"); // redirect to user home
+    } else {
+      setError("❌ Invalid OTP. Please try again.");
+    }
   };
 
   return (
@@ -34,6 +41,7 @@ const OtpPage = () => {
           maxLength="6"
           required
         />
+        {error && <p className="error-message">{error}</p>}
         <button type="submit">Verify OTP</button>
       </form>
     </div>

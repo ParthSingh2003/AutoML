@@ -1,0 +1,21 @@
+.home-container {
+    height: 100vh;
+    background-color: #121212;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .home-container h1 {
+    color: #bb86fc;
+    font-size: 2.5rem;
+  }
+  
+  .home-container p {
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+  
