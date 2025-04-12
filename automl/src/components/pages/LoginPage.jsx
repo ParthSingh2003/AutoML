@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "../styles/LoginPage.css";
 
 const LoginPage = () => {
@@ -12,31 +11,57 @@ const LoginPage = () => {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(""); // Clear error on input
   };
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+
+    const { email, password } = formData;
+
+    if (!email || !password) {
+      setError("❌ Please fill in all fields.");
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
-      if (res.data.msg === "OTP sent to your email") {
-        navigate("/otp", { state: { email: formData.email, mode: "login" } });
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // ✅ Navigate to OTP page with email and fromLogin=true
+        navigate("/otp", {
+          state: {
+            email,
+            fromLogin: true,
+          },
+        });
       } else {
-        setError("Unexpected response from server.");
+        setError(`❌ ${data.msg || "Login failed."}`);
       }
     } catch (err) {
-      console.error(err);
-      const msg = err.response?.data?.msg || "❌ Something went wrong. Try again.";
-      setError(msg);
+      console.error("Login error:", err);
+      setError("❌ Server error. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-container">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleLogin} className="login-form">
         <input
           type="email"
           name="email"
@@ -54,7 +79,9 @@ const LoginPage = () => {
           required
         />
         {error && <p className="error-message">{error}</p>}
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
     </div>
   );

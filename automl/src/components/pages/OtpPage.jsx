@@ -6,54 +6,43 @@ const OtpPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const email = location.state?.email;
-  const from = location.state?.from; // "signup" or undefined (for login)
-
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setOtp(e.target.value);
-    setError("");
-  };
+  const email = location.state?.email;
+  const fromLogin = location.state?.fromLogin || false;
 
-  const handleVerify = async (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
 
-    if (!otp || otp.length !== 6) {
-      setError("❌ Please enter a valid 6-digit OTP.");
+    if (!otp) {
+      setError("❌ Please enter the OTP.");
       return;
     }
 
+    setLoading(true);
+
     try {
-      setLoading(true);
-      setError("");
+      const response = await fetch(
+        `http://localhost:5000/api/auth/${fromLogin ? "verify-login-otp" : "verify-signup-otp"}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, otp }),
+        }
+      );
 
-      const endpoint =
-        from === "signup"
-          ? "http://localhost:5000/api/auth/verify-signup-otp"
-          : "http://localhost:5000/api/auth/verify-otp";
+      const data = await response.json();
 
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(`❌ ${data.msg || "Verification failed"}`);
-        setLoading(false);
-        return;
+      if (response.ok) {
+        navigate("/home");
+      } else {
+        setError(`❌ ${data.msg || "Invalid OTP."}`);
       }
-
-      // ✅ OTP verified → go to home
-      navigate("/home");
     } catch (err) {
-      console.error(err);
-      setError("❌ Something went wrong. Try again.");
+      console.error("OTP verification failed:", err);
+      setError("❌ Server error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -62,17 +51,18 @@ const OtpPage = () => {
   return (
     <div className="otp-container">
       <h2>Enter OTP</h2>
-      <p className="otp-message">
-        An OTP has been sent to <span>{email}</span>. Please enter it below.
-      </p>
-      <form onSubmit={handleVerify} className="otp-form">
+      <p className="info-message">📩 OTP sent to your email: <strong>{email}</strong></p>
+
+      <form onSubmit={handleVerifyOtp} className="otp-form">
         <input
           type="text"
           name="otp"
-          placeholder="Enter OTP"
+          placeholder="Enter the OTP"
           value={otp}
-          onChange={handleChange}
-          maxLength="6"
+          onChange={(e) => {
+            setOtp(e.target.value);
+            setError("");
+          }}
           required
         />
         {error && <p className="error-message">{error}</p>}

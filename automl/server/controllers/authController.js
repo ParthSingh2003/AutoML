@@ -78,7 +78,68 @@ const verifySignupOtp = async (req, res) => {
   }
 };
 
+
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || !user.verified) {
+      return res.status(400).json({ msg: 'User not found or not verified' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ msg: 'Invalid credentials' });
+
+    // generate OTP
+    const otp = generateOtp();
+    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
+
+    user.otp = otp;
+    user.otpExpiry = otpExpiry;
+    await user.save();
+
+    await transporter.sendMail({
+      from: `"Login OTP" <${process.env.EMAIL}>`,
+      to: email,
+      subject: 'Login OTP Verification',
+      html: `<p>Your login OTP is <strong>${otp}</strong>. It will expire in 5 minutes.</p>`,
+    });
+
+    res.json({ msg: 'OTP sent to email' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+const verifyLoginOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || user.otp !== otp || user.otpExpiry < Date.now()) {
+      return res.status(400).json({ msg: 'Invalid or expired OTP' });
+    }
+
+    // Clear OTP
+    user.otp = null;
+    user.otpExpiry = null;
+    await user.save();
+
+    // You could send back a JWT here instead if needed
+    res.json({ msg: 'Login successful!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
 module.exports = {
   signupUser,
   verifySignupOtp,
+  loginUser,         // ✅ must be exported
+  verifyLoginOtp     // ✅ must be exported
 };
