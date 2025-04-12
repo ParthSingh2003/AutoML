@@ -137,9 +137,85 @@ const verifyLoginOtp = async (req, res) => {
   }
 };
 
+const handleForgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || !user.verified) {
+      return res.status(400).json({ msg: 'User not found or not verified' });
+    }
+
+    const otp = generateOtp();
+    const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+
+    user.otp = otp;
+    user.otpExpiry = otpExpiry;
+    await user.save();
+
+    await transporter.sendMail({
+      from: `"Reset Password OTP" <${process.env.EMAIL}>`,
+      to: email,
+      subject: 'Reset your password',
+      html: `<p>Your OTP for password reset is <strong>${otp}</strong>. It will expire in 5 minutes.</p>`,
+    });
+
+    res.json({ msg: 'OTP sent to email for password reset' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+const verifyForgotPasswordOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || user.otp !== otp || user.otpExpiry < Date.now()) {
+      return res.status(400).json({ msg: 'Invalid or expired OTP' });
+    }
+
+    // Clear OTP to allow reset password
+    user.otp = null;
+    user.otpExpiry = null;
+    await user.save();
+
+    res.json({ msg: 'OTP verified for password reset' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+
+    await user.save();
+    res.json({ msg: 'Password reset successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+
 module.exports = {
   signupUser,
   verifySignupOtp,
-  loginUser,         // ✅ must be exported
-  verifyLoginOtp     // ✅ must be exported
+  loginUser,         
+  verifyLoginOtp,
+  handleForgotPassword, 
+  verifyForgotPasswordOtp,
+  resetPassword
 };

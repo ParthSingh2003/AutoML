@@ -50,8 +50,8 @@ const OtpPage = () => {
 
   return (
     <div className="otp-container">
-      <h2>Enter OTP</h2>
-      <p className="info-message">📩 OTP sent to your email: <strong>{email}</strong></p>
+      <h2>Verify OTP</h2>
+      <p className="info-line">OTP sent to your email: <strong>{email}</strong></p>
 
       <form onSubmit={handleVerifyOtp} className="otp-form">
         <input

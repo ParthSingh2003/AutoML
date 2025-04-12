@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(""); // Clear error on input
+    setError("");
   };
 
   const handleLogin = async (e) => {
@@ -40,7 +40,6 @@ const LoginPage = () => {
       const data = await res.json();
 
       if (res.ok) {
-        // ✅ Navigate to OTP page with email and fromLogin=true
         navigate("/otp", {
           state: {
             email,
@@ -79,10 +78,18 @@ const LoginPage = () => {
           required
         />
         {error && <p className="error-message">{error}</p>}
+
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
+
+      {/* ➕ Forgot Password Link */}
+      <p className="forgot-password-text">
+        <span onClick={() => navigate("/forgot-password")} style={{ cursor: "pointer", color: "#007bff", marginTop: "1rem" }}>
+          Forgot Password?
+        </span>
+      </p>
     </div>
   );
 };
